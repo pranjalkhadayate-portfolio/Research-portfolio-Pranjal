@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pranjal Khadayate, UX Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0f0e0c; --ink-muted: #5a5850; --ink-faint: #9a9890;
+  --paper: #f8f6f0; --paper-warm: #f0ede4; --paper-card: #ffffff;
+  --accent: #c84b1a; --accent-light: #f5e9e3; --accent-dark: #8a3010;
+  --teal: #0f6e56; --teal-light: #e1f5ee;
+  --border: rgba(15,14,12,0.12); --border-strong: rgba(15,14,12,0.22);
+  --serif: 'DM Serif Display', Georgia, serif;
+  --sans: 'DM Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); background: var(--paper); color: var(--ink); font-size: 16px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(248,246,240,0.92); backdrop-filter: blur(12px); border-bottom: 0.5px solid var(--border); padding: 0 5vw; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+.nav-logo { font-family: var(--serif); font-size: 18px; color: var(--ink); text-decoration: none; letter-spacing: -0.02em; }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a { font-size: 13px; color: var(--ink-muted); text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.2s; }
+.nav-links a:hover { color: var(--accent); }
+
+/* HERO */
+.hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding: 0 5vw; padding-top: 60px; position: relative; }
+.hero-left { display: flex; flex-direction: column; justify-content: center; padding: 80px 48px 80px 0; }
+.hero-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+.hero-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); }
+h1 { font-family: var(--serif); font-size: clamp(48px, 6vw, 80px); line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 28px; }
+h1 em { font-style: italic; color: var(--accent); }
+.hero-desc { font-size: 17px; line-height: 1.8; color: var(--ink-muted); max-width: 440px; margin-bottom: 40px; font-weight: 300; }
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: var(--paper); padding: 14px 28px; border-radius: 2px; font-size: 14px; font-weight: 500; text-decoration: none; transition: background 0.2s, transform 0.15s; }
+.btn-primary:hover { background: var(--accent); transform: translateY(-1px); }
+.btn-ghost { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border-strong); color: var(--ink); padding: 14px 28px; border-radius: 2px; font-size: 14px; text-decoration: none; transition: border-color 0.2s, color 0.2s; }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.hero-right { display: flex; align-items: center; justify-content: center; padding: 80px 0; }
+.hero-stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; width: 100%; max-width: 380px; }
+.stat-card { background: var(--paper-card); border: 0.5px solid var(--border); border-radius: 4px; padding: 28px 24px; transition: transform 0.2s; }
+.stat-card:hover { transform: translateY(-2px); }
+.stat-card.accent { background: var(--ink); color: var(--paper); }
+.stat-card.teal { background: var(--teal); color: white; }
+.stat-card.wide { grid-column: span 2; }
+.stat-number { font-family: var(--serif); font-size: 48px; line-height: 1; letter-spacing: -0.04em; margin-bottom: 8px; }
+.stat-label { font-size: 12px; color: var(--ink-muted); letter-spacing: 0.02em; text-transform: uppercase; }
+.stat-card.accent .stat-label { color: rgba(248,246,240,0.6); }
+.stat-card.teal .stat-label { color: rgba(255,255,255,0.7); }
+.clients-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.client-pill { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 100px; padding: 4px 12px; font-size: 12px; color: var(--ink-muted); font-weight: 500; }
+.scroll-line { position: absolute; bottom: 40px; left: 5vw; display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--ink-faint); text-transform: uppercase; }
+.scroll-line::after { content: ''; width: 1px; height: 48px; background: var(--ink-faint); animation: scrollPulse 2s ease-in-out infinite; }
+@keyframes scrollPulse { 0%,100%{transform:scaleY(1);opacity:1} 50%{transform:scaleY(0.4);opacity:0.4} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.hero-left > * { animation: fadeUp 0.6s ease both; }
+.hero-left > *:nth-child(1){animation-delay:0.1s} .hero-left > *:nth-child(2){animation-delay:0.2s}
+.hero-left > *:nth-child(3){animation-delay:0.3s} .hero-left > *:nth-child(4){animation-delay:0.4s}
+.hero-right { animation: fadeUp 0.6s ease 0.45s both; }
+
+/* SECTIONS */
+section { padding: 100px 5vw; }
+section:nth-child(even) { background: var(--paper-card); }
+.section-header { display: flex; align-items: baseline; gap: 20px; margin-bottom: 60px; }
+.section-num { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.1em; }
+h2 { font-family: var(--serif); font-size: clamp(32px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1.1; }
+h2 em { font-style: italic; color: var(--accent); }
+
+/* DOMAIN STRIP */
+.domain-strip { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 48px; margin-top: -24px; }
+.domain-badge { display: flex; align-items: center; gap: 8px; background: var(--paper-card); border: 0.5px solid var(--border); border-radius: 100px; padding: 6px 14px; font-size: 13px; color: var(--ink-muted); }
+.domain-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-orange{background:#c84b1a} .dot-blue{background:#185fa5} .dot-teal{background:#0f6e56} .dot-purple{background:#534ab7} .dot-amber{background:#ba7517}
+
+/* WORK LIST */
+.work-list { display: flex; flex-direction: column; gap: 2px; }
+.work-item { background: var(--paper); border: 0.5px solid var(--border); border-radius: 4px; overflow: hidden; transition: border-color 0.2s; }
+.work-item:hover { border-color: rgba(200,75,26,0.4); }
+.work-header { display: grid; grid-template-columns: 52px 1fr auto; align-items: center; gap: 24px; padding: 28px 32px; cursor: pointer; }
+.work-index { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.08em; }
+.work-meta h3 { font-family: var(--serif); font-size: 21px; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 5px; }
+.work-meta p { font-size: 13px; color: var(--ink-muted); }
+.work-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+.tag { border: 0.5px solid var(--border-strong); border-radius: 100px; padding: 4px 13px; font-size: 12px; color: var(--ink-muted); }
+.tag.accent-tag { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+.work-toggle { width: 30px; height: 30px; border: 0.5px solid var(--border-strong); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; color: var(--ink-muted); transition: all 0.2s; flex-shrink: 0; cursor: pointer; }
+.work-toggle.open { background: var(--accent); border-color: var(--accent); color: white; transform: rotate(45deg); }
+
+/* CASE STUDY BODY */
+.cs-body { padding: 0 32px 44px; border-top: 0.5px solid var(--border); display: none; }
+.cs-body.open { display: block; }
+.cs-meta-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: 4px; overflow: hidden; margin-top: 28px; margin-bottom: 36px; }
+.cs-meta-cell { background: var(--paper-card); padding: 14px 18px; }
+.cs-meta-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 5px; }
+.cs-meta-value { font-size: 13px; color: var(--ink); font-weight: 500; line-height: 1.5; }
+.cs-section { margin-bottom: 32px; }
+.cs-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.cs-label-num { font-family: var(--mono); font-size: 10px; color: var(--accent); background: var(--accent-light); padding: 2px 7px; border-radius: 2px; }
+.cs-problem { background: #fdf3ef; border-left: 3px solid var(--accent); border-radius: 0 4px 4px 0; padding: 15px 20px; font-size: 15px; font-style: italic; color: var(--accent-dark); line-height: 1.7; }
+.cs-method-rationale { font-size: 14px; color: var(--ink-muted); line-height: 1.85; }
+.cs-method-rationale strong { color: var(--ink); font-weight: 500; }
+.cs-process-steps { display: grid; grid-template-columns: repeat(5,1fr); gap: 0; position: relative; margin-bottom: 20px; }
+.cs-process-steps::before { content: ''; position: absolute; top: 20px; left: 10%; right: 10%; height: 1px; background: var(--border-strong); z-index: 0; }
+.cs-process-step { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 0 8px; position: relative; z-index: 1; }
+.cs-step-dot { width: 40px; height: 40px; border-radius: 50%; background: var(--paper-card); border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 10px; color: var(--accent); background: var(--accent-light); }
+.cs-process-step h5 { font-size: 12px; font-weight: 500; color: var(--ink); line-height: 1.4; }
+.cs-process-step p { font-size: 12px; color: var(--ink-muted); line-height: 1.5; }
+.cs-synthesis { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 4px; padding: 18px 22px; display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; }
+.cs-synthesis-icon { font-size: 16px; margin-top: 3px; }
+.cs-synthesis p { font-size: 13px; color: var(--ink-muted); line-height: 1.75; margin: 0; }
+.cs-synthesis strong { color: var(--ink); font-weight: 500; }
+.cs-quotes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.cs-quote { background: var(--paper-card); border: 0.5px solid var(--border); border-radius: 4px; padding: 16px 18px 12px; }
+.cs-quote::before { content: '\201C'; font-family: var(--serif); font-size: 40px; color: var(--accent); line-height: 0.8; display: block; margin-bottom: 6px; }
+.cs-quote p { font-size: 13px; color: var(--ink); line-height: 1.7; font-style: italic; margin-bottom: 10px; }
+.cs-quote-attr { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); letter-spacing: 0.05em; }
+.cs-findings { display: flex; flex-direction: column; gap: 8px; }
+.cs-finding { background: var(--teal-light); border: 0.5px solid rgba(15,110,86,0.2); border-radius: 4px; padding: 14px 16px; }
+.cs-finding strong { display: block; font-size: 13px; color: #085041; font-weight: 600; margin-bottom: 4px; }
+.cs-finding p { font-size: 13px; color: var(--teal); line-height: 1.65; margin: 0; }
+.cs-outcome { background: var(--ink); border-radius: 4px; padding: 22px 26px; margin-top: 16px; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; }
+.cs-outcome-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(248,246,240,0.45); margin-bottom: 6px; }
+.cs-outcome p { font-size: 13px; color: rgba(248,246,240,0.82); line-height: 1.75; margin: 0; }
+.cs-outcome-icon { font-size: 24px; }
+.method-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.method-chip { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 2px; padding: 4px 10px; font-size: 12px; color: var(--ink-muted); }
+
+/* RICH PROCESS */
+.process-philosophy { max-width: 680px; margin-bottom: 56px; }
+.process-intro { font-size: 17px; color: var(--ink-muted); line-height: 1.85; font-weight: 300; font-style: italic; border-left: 3px solid var(--accent); padding-left: 20px; }
+.process-steps-rich { display: flex; flex-direction: column; gap: 0; }
+.process-step-rich { display: grid; grid-template-columns: 72px 1fr; gap: 0; }
+.psrich-left { display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+.psrich-num { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid var(--accent); background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 500; flex-shrink: 0; }
+.psrich-line { width: 1px; flex: 1; background: var(--border); margin: 8px 0; min-height: 40px; }
+.psrich-right { padding: 0 0 48px 24px; }
+.psrich-right h4 { font-family: var(--serif); font-size: 22px; letter-spacing: -0.02em; margin-bottom: 14px; color: var(--ink); }
+.psrich-right p { font-size: 14px; color: var(--ink-muted); line-height: 1.85; margin-bottom: 12px; font-weight: 300; }
+.psrich-outputs { margin-top: 18px; }
+.psrich-output-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 8px; }
+.psrich-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.psrich-chip { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 2px; padding: 4px 12px; font-size: 12px; color: var(--ink-muted); }
+
+/* POV SECTION */
+.pov-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.pov-card { padding: 28px; border: 0.5px solid var(--border); border-radius: 4px; background: var(--paper); position: relative; transition: border-color 0.2s; }
+.pov-card:hover { border-color: var(--border-strong); }
+.pov-num { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 12px; }
+.pov-card h4 { font-family: var(--serif); font-size: 17px; letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.3; color: var(--ink); }
+.pov-card p { font-size: 13px; color: var(--ink-muted); line-height: 1.8; margin: 0; }
+
+/* METHODS GRID */
+.skills-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.skill-block { padding: 26px; border: 0.5px solid var(--border); border-radius: 4px; background: var(--paper); position: relative; }
+.skill-block::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--accent); border-radius: 4px 0 0 4px; opacity: 0; transition: opacity 0.2s; }
+.skill-block:hover::before { opacity: 1; }
+.skill-icon { font-size: 22px; margin-bottom: 12px; }
+.skill-title { font-family: var(--serif); font-size: 18px; letter-spacing: -0.02em; margin-bottom: 10px; }
+.skill-block p { font-size: 13px; color: var(--ink-muted); line-height: 1.75; }
+.skill-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.skill-tag { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 2px; padding: 3px 10px; font-size: 12px; color: var(--ink-muted); }
+
+/* PROCESS */
+.process-row { display: grid; grid-template-columns: repeat(5,1fr); position: relative; }
+.process-row::before { content: ''; position: absolute; top: 32px; left: 10%; right: 10%; height: 1px; background: var(--border-strong); }
+.process-step { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 0 10px; position: relative; z-index: 1; }
+.process-dot { width: 64px; height: 64px; border-radius: 50%; background: var(--paper-card); border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 11px; color: var(--accent); }
+.process-step h4 { font-family: var(--serif); font-size: 16px; letter-spacing: -0.01em; }
+.process-step p { font-size: 13px; color: var(--ink-muted); line-height: 1.6; }
+.methods-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 56px; }
+.method-card { background: var(--paper); border: 0.5px solid var(--border); border-radius: 4px; padding: 22px; transition: transform 0.2s; }
+.method-card:hover { transform: translateY(-2px); }
+.method-num { font-family: var(--mono); font-size: 22px; color: var(--accent); line-height: 1; margin-bottom: 10px; }
+.method-card h4 { font-family: var(--serif); font-size: 15px; letter-spacing: -0.01em; margin-bottom: 6px; }
+.method-card p { font-size: 12px; color: var(--ink-muted); line-height: 1.6; }
+
+/* QUOTE SECTION */
+.quote-section { background: var(--ink); color: var(--paper); padding: 72px 5vw; text-align: center; }
+.big-quote { font-family: var(--serif); font-size: clamp(22px,3.5vw,40px); font-style: italic; line-height: 1.45; max-width: 760px; margin: 0 auto; letter-spacing: -0.02em; }
+
+/* ABOUT */
+.about-grid { display: grid; grid-template-columns: 280px 1fr; gap: 72px; align-items: start; }
+.about-sidebar { display: flex; flex-direction: column; gap: 16px; }
+.about-name-card { background: var(--ink); color: var(--paper); border-radius: 4px; padding: 32px; }
+.about-name-card .name { font-family: var(--serif); font-size: 28px; letter-spacing: -0.03em; margin-bottom: 6px; }
+.about-name-card .title { font-size: 13px; color: rgba(248,246,240,0.55); }
+.about-contact { background: var(--paper-warm); border: 0.5px solid var(--border); border-radius: 4px; padding: 18px; }
+.contact-item { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; color: var(--ink-muted); text-decoration: none; transition: color 0.2s; }
+.contact-item:last-child { border-bottom: none; }
+.contact-item:hover { color: var(--accent); }
+.contact-icon { width: 28px; height: 28px; background: var(--paper-card); border: 0.5px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.about-content h3 { font-family: var(--serif); font-size: 24px; letter-spacing: -0.02em; margin-bottom: 12px; margin-top: 32px; }
+.about-content h3:first-child { margin-top: 0; }
+.about-content p { font-size: 14px; color: var(--ink-muted); line-height: 1.85; margin-bottom: 14px; font-weight: 300; }
+.exp-item { border-left: 2px solid var(--border); padding-left: 22px; margin-bottom: 24px; position: relative; }
+.exp-item::before { content: ''; position: absolute; left: -5px; top: 6px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.exp-company { font-weight: 500; font-size: 14px; margin-bottom: 2px; }
+.exp-role { font-size: 12px; color: var(--ink-muted); margin-bottom: 6px; font-family: var(--mono); letter-spacing: 0.04em; }
+.exp-item p { font-size: 13px; color: var(--ink-muted); line-height: 1.75; margin: 0; }
+
+/* TOOLS */
+.tools-section { padding: 56px 5vw; border-top: 0.5px solid var(--border); }
+.tools-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 10px; margin-top: 32px; }
+.tool-chip { background: var(--paper-card); border: 0.5px solid var(--border); border-radius: 2px; padding: 11px 14px; font-size: 13px; color: var(--ink-muted); text-align: center; transition: border-color 0.2s, color 0.2s; }
+.tool-chip:hover { border-color: var(--accent); color: var(--accent); }
+
+footer { background: var(--ink); color: rgba(248,246,240,0.45); padding: 56px 5vw; display: flex; justify-content: space-between; align-items: center; }
+footer .f-name { font-family: var(--serif); font-size: 26px; color: var(--paper); letter-spacing: -0.02em; }
+footer p { font-size: 13px; margin-top: 4px; }
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr} .hero-right{display:none}
+  .pov-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr}
+  .methods-grid{grid-template-columns:1fr 1fr}
+  .process-row{grid-template-columns:1fr} .process-row::before{display:none}
+  .about-grid{grid-template-columns:1fr}
+  .tools-grid{grid-template-columns:repeat(3,1fr)}
+  .work-header{grid-template-columns:40px 1fr} .work-tags{display:none}
+  .cs-process-steps{grid-template-columns:1fr 1fr} .cs-process-steps::before{display:none}
+  .cs-quotes{grid-template-columns:1fr}
+  .cs-meta-row{grid-template-columns:1fr 1fr}
+  footer{flex-direction:column;gap:16px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">Pranjal Khadayate</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="mailto:pranjalkhadayate@gmail.com">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-label">UX Researcher &amp; Design Researcher</div>
+    <h1>Research that<br>moves <em>products</em><br>forward.</h1>
+    <p class="hero-desc">Leading end-to-end qualitative and mixed-method research across enterprise software, consumer platforms, and mobility ecosystems. I turn complex human behaviour into decisions teams can act on.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#work">View case studies →</a>
+      <a class="btn-ghost" href="mailto:pranjalkhadayate@gmail.com">Get in touch</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stats-grid">
+      <div class="stat-card accent"><div class="stat-number">15+</div><div class="stat-label">Research studies led</div></div>
+      <div class="stat-card"><div class="stat-number">500+</div><div class="stat-label">Participants across studies</div></div>
+      <div class="stat-card teal"><div class="stat-number">4yr</div><div class="stat-label">Industry experience</div></div>
+      <div class="stat-card"><div class="stat-number">5+</div><div class="stat-label">Domains covered</div></div>
+      <div class="stat-card wide">
+        <div class="stat-label" style="margin-bottom:10px;">Client portfolio</div>
+        <div class="clients-row">
+          <span class="client-pill">Google</span><span class="client-pill">Meta</span><span class="client-pill">Maruti Suzuki</span><span class="client-pill">Royal Enfield</span><span class="client-pill">Otis</span><span class="client-pill">Tata</span><span class="client-pill">YouTube</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-line" style="display:none"></div>
+</div>
+
+<!-- WORK -->
+<section id="work">
+  <div class="section-header"><span class="section-num">01</span><h2>Selected <em>work</em></h2></div>
+  <div class="domain-strip">
+    <div class="domain-badge"><span class="domain-dot dot-orange"></span>Enterprise &amp; B2B</div>
+    <div class="domain-badge"><span class="domain-dot dot-purple"></span>Conversational Commerce</div>
+    <div class="domain-badge"><span class="domain-dot dot-teal"></span>Mobility &amp; EV</div>
+    <div class="domain-badge"><span class="domain-dot dot-blue"></span>Trust &amp; Safety</div>
+    <div class="domain-badge"><span class="domain-dot dot-amber"></span>Consumer Platforms</div>
+  </div>
+
+  <div class="work-list">
+
+    <!-- CASE 1: OTIS -->
+    <div class="work-item">
+      <div class="work-header" onclick="toggleWork(this)">
+        <span class="work-index">01</span>
+        <div class="work-meta">
+          <h3>Otis, Enterprise Mobility Platform Workflow Research</h3>
+          <p>Identifying where and why an enterprise field service platform was failing across three user roles before redesign</p>
+        </div>
+        <div class="work-tags">
+          <span class="tag">Otis</span><span class="tag accent-tag">Enterprise</span><span class="tag">Contextual Inquiry</span><span class="tag">B2B</span>
+          <div class="work-toggle">+</div>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-meta-row">
+          <div class="cs-meta-cell"><div class="cs-meta-label">Client</div><div class="cs-meta-value">Otis Elevator Co.</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">Domain</div><div class="cs-meta-value">Enterprise / B2B</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">Methods</div><div class="cs-meta-value">Heuristic Evaluation, Contextual Inquiry, Moderated UT, Workflow Analysis</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">My role</div><div class="cs-meta-value">Research lead, moderation, synthesis, stakeholder reporting</div></div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">01</span> Research question</div>
+          <div class="cs-problem">Where, how, and why is this enterprise field service platform failing its users, and what does the team need to know before investing in a redesign?</div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">02</span> Why this method</div>
+          <p class="cs-method-rationale">I started with a <strong>heuristic evaluation</strong> before recruiting any participants. The platform had years of accumulated design debt and I needed a severity map before writing a discussion guide, otherwise sessions risk confirming what we already suspect rather than finding what we don't know. Once I had that map, I chose <strong>contextual inquiry</strong> over standard interviews because this was a workflow problem. Field technicians operate in low light with gloves on, moving between floors. Watching someone use a platform in a conference room doesn't surface that. Finally, <strong>moderated usability testing</strong> validated specific task flows and gave us completion rates to quantify friction across all three user roles.</p>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">03</span> How I worked</div>
+          <div class="cs-process-steps">
+            <div class="cs-process-step"><div class="cs-step-dot">01</div><h5>Heuristic audit</h5><p>Severity-rated 30+ issues across Nielsen heuristics before any participant contact</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">02</div><h5>Contextual inquiry</h5><p>Observed technicians, coordinators, and ops managers in their actual work environments</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">03</div><h5>Moderated UT</h5><p>Task-based sessions across 3 roles capturing completion rates, errors, and think-aloud</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">04</div><h5>Affinity mapping</h5><p>Clustered observations by role and workflow stage to separate shared vs. role-specific failures</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">05</div><h5>Prioritised report</h5><p>Mapped findings to business impact and implementation effort for stakeholder decision-making</p></div>
+          </div>
+          <div class="cs-synthesis">
+            <span class="cs-synthesis-icon">🔎</span>
+            <p><strong>How I synthesised:</strong> I mapped every observation to a workflow stage and user role in FigJam, then looked for where friction overlapped across roles at the same stage. Workarounds were the primary signal, every time a user reached for their phone, a spreadsheet, or a colleague instead of the platform, I treated that as a design failure, not user error. That reframe shifted how the team prioritised.</p>
+          </div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">04</span> What participants said</div>
+          <div class="cs-quotes">
+            <div class="cs-quote">
+              <p>I check the app, it tells me the job is pending. I call the coordinator, she says it's already been assigned. The app just doesn't know that yet. So I always call first now before I even open it.</p>
+              <div class="cs-quote-attr">Field Technician</div>
+            </div>
+            <div class="cs-quote">
+              <p>I have a spreadsheet I've been keeping for two years. It has everything the system should have. My manager knows about it. Everyone uses it.</p>
+              <div class="cs-quote-attr">Service Coordinator</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">05</span> Key findings and outcome</div>
+          <div class="cs-findings">
+            <div class="cs-finding"><strong>Workaround culture was endemic and team-wide</strong><p>Users had built parallel systems, spreadsheets, messaging groups, because the platform couldn't surface the right information at the right time. These weren't individual habits; they were documented, collective adaptations that the team had normalised.</p></div>
+            <div class="cs-finding"><strong>Cross-role handoffs were invisible in the system</strong><p>When a task moved between technician and coordinator, neither party had reliable status visibility, leading to duplicate calls, missed escalations, and eroded trust in whether the platform was ever accurate.</p></div>
+            <div class="cs-finding"><strong>IA was built around the org chart, not the task flow</strong><p>Navigation hierarchies mirrored internal structure. Users had to know how the company was organised to find what they needed, high cognitive load on every routine interaction.</p></div>
+          </div>
+          <div class="cs-outcome">
+            <span class="cs-outcome-icon">📍</span>
+            <div>
+              <div class="cs-outcome-label">What changed</div>
+              <p>The team had a severity-ranked backlog grounded in observed behaviour, not assumptions. The cross-role handoff gap, a problem the team had not formally identified before research, became the primary design problem for the next sprint.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 2: META -->
+    <div class="work-item">
+      <div class="work-header" onclick="toggleWork(this)">
+        <span class="work-index">02</span>
+        <div class="work-meta">
+          <h3>Meta, MaxTAS Panel Research &amp; Usability Testing</h3>
+          <p>Evaluating whether a redesigned panel in Meta Business Inbox actually works for SMB users managing customer conversations</p>
+        </div>
+        <div class="work-tags">
+          <span class="tag">Meta</span><span class="tag accent-tag">Usability Testing</span><span class="tag">Conversational Commerce</span><span class="tag">SMB</span>
+          <div class="work-toggle">+</div>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-meta-row">
+          <div class="cs-meta-cell"><div class="cs-meta-label">Client</div><div class="cs-meta-value">Meta</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">Domain</div><div class="cs-meta-value">Conversational Commerce</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">Methods</div><div class="cs-meta-value">Moderated UT, Think-Aloud, Prototype Testing, Daily Debriefs</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">My role</div><div class="cs-meta-value">Full research ownership, screener design, moderation, topline report</div></div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">01</span> Research question</div>
+          <div class="cs-problem">Does the redesigned MaX/TAS panel solve the usability problems it was built to fix, or does it introduce new ones for SMB users managing orders in chat?</div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">02</span> Why this method</div>
+          <p class="cs-method-rationale">This was an evaluative study on a specific redesign, so <strong>moderated prototype testing</strong> with a <strong>think-aloud protocol</strong> was the right fit, I needed to capture not just whether users could complete tasks, but where they hesitated, what they misread, and what they expected that wasn't there. I recruited from active SMB advertisers rather than general users because the panel is deeply embedded in real business workflows. General consumers would give us surface reactions; business owners gave us operational friction. I ran <strong>daily debriefs</strong> after each session, a deliberate choice that let me iterate the discussion guide in real time rather than surface the same gaps seven times.</p>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">03</span> How I worked</div>
+          <div class="cs-process-steps">
+            <div class="cs-process-step"><div class="cs-step-dot">01</div><h5>Screener design</h5><p>Built criteria targeting active SMB advertisers across clothing, custom goods, and retail</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">02</div><h5>Discussion guide</h5><p>Structured guide covering order management, payment tracking, label customisation, and order creation</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">03</div><h5>7 moderated sessions</h5><p>1:1 remote sessions with think-aloud protocol across 3 weeks</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">04</div><h5>Daily debriefs</h5><p>Post-session debriefs captured emerging patterns and allowed real-time guide iteration</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">05</div><h5>Topline report</h5><p>Synthesised findings into prioritised recommendations across 4 workflow areas</p></div>
+          </div>
+          <div class="cs-synthesis">
+            <span class="cs-synthesis-icon">🔎</span>
+            <p><strong>How I synthesised:</strong> I organised observations by task and panel section, then flagged moments where multiple participants hit friction at the same point, those were the highest-confidence findings. I separated "the design wasn't clear" problems from "the business workflow isn't supported" problems, because they require different responses from the product team.</p>
+          </div>
+          <div class="cs-synthesis" style="margin-top:12px;background:var(--paper-card)">
+            <span class="cs-synthesis-icon">⚠️</span>
+            <p><strong>Constraint worth noting:</strong> With only 7 participants, any finding that appeared in 2 or fewer sessions had to be flagged as directional rather than conclusive. The payment integration gap appeared in nearly every session, which gave it strong confidence. The multi-order ID issue was raised by a subset of participants in specific business types, so we framed it as a clear need for custom-product sellers rather than a universal gap. That distinction mattered for how the product team prioritised it.</p>
+          </div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">04</span> What participants said</div>
+          <div class="cs-quotes">
+            <div class="cs-quote">
+              <p>If the same customer is buying different products, the IDs should be different. Right now I can't tell which order is which.</p>
+              <div class="cs-quote-attr">Retail business owner</div>
+            </div>
+            <div class="cs-quote">
+              <p>Integration with Razorpay or PhonePe would be helpful. Right now I have to check there and then come back here to mark it paid.</p>
+              <div class="cs-quote-attr">Custom clothing seller</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">05</span> Key findings and outcome</div>
+          <div class="cs-findings">
+            <div class="cs-finding"><strong>Order status needed one canonical location, not two</strong><p>Users valued visibility but were frustrated by repetition. Seeing the same status update in both the chat thread and the right panel felt redundant, it created doubt about which one was authoritative.</p></div>
+            <div class="cs-finding"><strong>Multi-order handling was broken for custom-product businesses</strong><p>Users managing multiple orders from one customer had no way to track them separately. This wasn't an edge case, it was a daily workflow for the majority of participants. Unique order IDs were an unambiguous, unmet need.</p></div>
+            <div class="cs-finding"><strong>Minimalism outperformed configurability in status design</strong><p>A clean 3-stage system, Ordered, Paid, Shipped, was faster and less error-prone than the more configurable dropdown design. Participants didn't want power; they wanted clarity.</p></div>
+          </div>
+          <div class="cs-outcome">
+            <span class="cs-outcome-icon">📍</span>
+            <div>
+              <div class="cs-outcome-label">What changed</div>
+              <p>Findings gave Meta's product team clear, participant-grounded evidence for redesign priorities. The unique order ID gap and payment automation need, both invisible in earlier assumptions, became validated requirements for the next design iteration.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 3: MSIL -->
+    <div class="work-item">
+      <div class="work-header" onclick="toggleWork(this)">
+        <span class="work-index">03</span>
+        <div class="work-meta">
+          <h3>Maruti Suzuki, EV Charging App &amp; Infotainment Research</h3>
+          <p>10-week mixed-method study to validate whether the connected EV ecosystem could support real-world charging before launch</p>
+        </div>
+        <div class="work-tags">
+          <span class="tag">MSIL</span><span class="tag accent-tag">Diary Study</span><span class="tag">Mixed Method</span><span class="tag">Mobility</span>
+          <div class="work-toggle">+</div>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-meta-row">
+          <div class="cs-meta-cell"><div class="cs-meta-label">Client</div><div class="cs-meta-value">Maruti Suzuki India Ltd.</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">Domain</div><div class="cs-meta-value">Mobility / EV</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">Methods</div><div class="cs-meta-value">Diary Study, Moderated UT (in-person), Contextual Interviews, Competitive Benchmarking</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">My role</div><div class="cs-meta-value">Research planning, moderation, diary study facilitation, synthesis, stakeholder reporting</div></div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">01</span> Research question</div>
+          <div class="cs-problem">Can this EV charging app and infotainment ecosystem support a reliable real-world charging experience, or will it fail users at the moments that matter most?</div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">02</span> Why this method</div>
+          <p class="cs-method-rationale">The research started with <strong>in-person moderated usability testing</strong> at actual MSIL charging stations. Early sessions quickly revealed a fundamental limitation: a controlled session captures whether someone can use the app, but not whether they trust it enough to stake a journey on it. Trust in a charging app isn't formed in a single interaction, it's built or broken over weeks of real use, failed sessions, and recovered anxieties. A lab environment couldn't surface that. So we evolved the approach. The next phase was a <strong>longitudinal diary study</strong>, where participants were given the app and asked to use it for their real charging needs over three weeks, logging sessions, emotions, and failures as they happened. This also let us observe whether users were following the intended task flows or developing workarounds, and where those workarounds appeared in the journey. I ran two participant batches deliberately, using what the in-person sessions taught us to sharpen the diary tasks and protocol before the second cohort.</p>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">03</span> How I worked</div>
+          <div class="cs-process-steps">
+            <div class="cs-process-step"><div class="cs-step-dot">01</div><h5>Hypothesis journey map</h5><p>Mapped assumed user journey before fieldwork to align team on what we were testing</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">02</div><h5>In-person UT (Batch 1)</h5><p>Moderated sessions at MSIL charging stations, surfacing the limits of what a controlled setting could capture</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">03</div><h5>Diary study (3 weeks)</h5><p>50 participants used the app for real charging over 3 weeks, logging sessions, failures, and task approaches as they happened</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">04</div><h5>Competitive benchmark</h5><p>Evaluated Statiq, ChargeZone, Tata EZ Charge, and Zeon across 6 dimensions</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">05</div><h5>Failure point synthesis</h5><p>Task success matrices and affinity mapping across 5 core user journeys</p></div>
+          </div>
+          <div class="cs-synthesis">
+            <span class="cs-synthesis-icon">🔎</span>
+            <p><strong>How I synthesised:</strong> I built a task success matrix mapping every participant against every task, then looked for patterns in where failures clustered. The UPI charging initiation task failed at 73%, that number alone shifted product priorities. I also tracked the emotional arc from diary entries, looking for the specific moments where optimism turned to doubt and doubt turned to learned distrust. That emotional framing became central to how findings were presented to stakeholders.</p>
+          </div>
+          <div class="cs-synthesis" style="margin-top:12px;background:var(--paper-card)">
+            <span class="cs-synthesis-icon">⚠️</span>
+            <p><strong>What we had to adapt:</strong> Batch 1 in-person sessions at dealerships ran into real fieldwork problems. Some participants were denied access to chargers, cars blocked EV bays, and a few sessions couldn't be completed as designed. Rather than push through with compromised data, we used those sessions to understand why the physical environment was creating friction, and fed that directly into the diary study design. Batch 2 protocols were also revised after Batch 1 revealed that UPI payment flows were getting auto-cancelled in ways we hadn't anticipated, so we introduced task workarounds and explicit timeout guidance for Batch 2 participants.</p>
+          </div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">04</span> What participants said</div>
+          <div class="cs-quotes">
+            <div class="cs-quote">
+              <p>It said the session was active. I was standing outside for 20 minutes. The car wasn't charging. I didn't know if I'd been charged or not.</p>
+              <div class="cs-quote-attr">EV owner, Delhi</div>
+            </div>
+            <div class="cs-quote">
+              <p>I bookmarked it on my phone. Then I get in the car and none of my bookmarks are there. I have to search all over again while I'm driving.</p>
+              <div class="cs-quote-attr">Daily commuter, Bangalore</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">05</span> Key findings and outcome</div>
+          <div class="cs-findings">
+            <div class="cs-finding"><strong>Charging completion was the only measure of app success</strong><p>Every other feature, trip planning, bookmarking, infotainment, was judged through one lens: did it reliably help me charge? One failure reset trust entirely, regardless of how many sessions had worked before.</p></div>
+            <div class="cs-finding"><strong>UPI charging initiation failed at 73%, the most critical task in the journey</strong><p>Payment flow failures, unexplained session rejections, and misleading "session active" states trapped users in retry loops with no guidance. The app looked calm while users were stranded outside.</p></div>
+            <div class="cs-finding"><strong>The mobile app and infotainment system were not one product</strong><p>Bookmarks, filters, and session history from the mobile app did not appear in infotainment. Users discovered this mid-journey, while driving, and had to rebuild their setup from scratch. The two systems felt disconnected because they were.</p></div>
+          </div>
+          <div class="cs-outcome">
+            <span class="cs-outcome-icon">📍</span>
+            <div>
+              <div class="cs-outcome-label">What changed</div>
+              <p>Pre-launch research surfaced critical failure points across the charging initiation flow and infotainment integration. The 73% failure rate on Task 3 and the session state mismatch were escalated as launch blockers, findings that would not have been visible in a lab-based study.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CASE 4: INFOTAINMENT -->
+    <div class="work-item">
+      <div class="work-header" onclick="toggleWork(this)">
+        <span class="work-index">04</span>
+        <div class="work-meta">
+          <h3>In-Car Infotainment Systems, Generative Research</h3>
+          <p>Exploratory research to understand how drivers actually use in-car systems and what the safety and design implications are</p>
+        </div>
+        <div class="work-tags">
+          <span class="tag">Automotive</span><span class="tag accent-tag">Generative Research</span><span class="tag">Behavioural</span><span class="tag">Safety</span>
+          <div class="work-toggle">+</div>
+        </div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-meta-row">
+          <div class="cs-meta-cell"><div class="cs-meta-label">Domain</div><div class="cs-meta-value">Automotive / Consumer</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">Type</div><div class="cs-meta-value">Generative / Exploratory</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">Methods</div><div class="cs-meta-value">In-depth Interviews, Secondary Research, Red Route Analysis, Behavioural Mapping</div></div>
+          <div class="cs-meta-cell"><div class="cs-meta-label">My role</div><div class="cs-meta-value">Research design, moderation, secondary synthesis, insight generation</div></div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">01</span> Research question</div>
+          <div class="cs-problem">Which infotainment features do drivers actually use, which ones create distraction risk, and what do users genuinely want from the next generation of in-car interfaces?</div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">02</span> Why this method</div>
+          <p class="cs-method-rationale">There was no prototype to evaluate, this was generative research to build product strategy from scratch. I started with <strong>secondary research</strong> because the domain had existing safety literature on driver distraction that would have taken primary research months to replicate. That literature review shaped exactly which assumptions I needed primary research to challenge. I chose <strong>in-depth interviews</strong> over surveys because I needed to understand the reasoning behind behaviour, why someone reaches for their phone instead of using voice command, not just that they do it. I applied a <strong>Red Route Analysis</strong> to separate what users say they want from what they actually use, which in this domain turned out to be quite different.</p>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">03</span> How I worked</div>
+          <div class="cs-process-steps">
+            <div class="cs-process-step"><div class="cs-step-dot">01</div><h5>Secondary research</h5><p>Literature review of global safety studies, industry reports, and driver distraction research</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">02</div><h5>9 in-depth interviews</h5><p>Mid-range car owners across varying tech familiarity, covering 6 topic areas</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">03</div><h5>Red Route Analysis</h5><p>Mapped features used by everyone always, frequently, occasionally, or rarely</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">04</div><h5>Failure pattern mapping</h5><p>Documented 3 distinct distraction cascade patterns with safety implications for each</p></div>
+            <div class="cs-process-step"><div class="cs-step-dot">05</div><h5>Strategy output</h5><p>Opportunity areas for AI integration, interface simplification, and physical control retention</p></div>
+          </div>
+          <div class="cs-synthesis">
+            <span class="cs-synthesis-icon">🔎</span>
+            <p><strong>How I synthesised:</strong> The most revealing pattern wasn't what users did, it was the cascade: voice command fails, so they reach for the touchscreen; that's unclear, so they reach for the phone. Each step adds distraction. I mapped this as a failure chain rather than three separate problems, because the design solution had to interrupt the chain, not just fix one link. That framing changed the recommendation from "improve voice recognition" to "reduce dependency on any single input modality."</p>
+          </div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">04</span> What participants said</div>
+          <div class="cs-quotes">
+            <div class="cs-quote">
+              <p>I can do it on my phone faster than on the screen. And I know it's wrong. But the system just doesn't recognise what I'm saying half the time.</p>
+              <div class="cs-quote-attr">Mid-range car owner</div>
+            </div>
+            <div class="cs-quote">
+              <p>I prefer buttons for AC and volume. I don't want to look for it on a screen. My hand just knew where the knob was.</p>
+              <div class="cs-quote-attr">Daily commuter</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cs-section">
+          <div class="cs-label"><span class="cs-label-num">05</span> Key findings and outcome</div>
+          <div class="cs-findings">
+            <div class="cs-finding"><strong>The infotainment system is treated as a phone extension, not a standalone interface</strong><p>CarPlay and Android Auto dominated actual daily usage. The inbuilt system was a fallback. Design strategy that assumed users would engage with the inbuilt system was built on a false premise.</p></div>
+            <div class="cs-finding"><strong>Touchscreen-only routine controls introduce a documented safety risk</strong><p>Moving AC and volume to touch UI requires visual attention for a task that previously used zero. Secondary research corroborated this with 19 to 26 second distraction windows per touchscreen interaction, data that reframed the design problem as a safety problem.</p></div>
+            <div class="cs-finding"><strong>60%+ of features were unknown to users, an IA failure, not a feature failure</strong><p>Users weren't ignoring features. They had no reason to explore menus while driving. Features buried in navigation hierarchies simply didn't exist for most users in practice.</p></div>
+          </div>
+          <div class="cs-outcome">
+            <span class="cs-outcome-icon">📍</span>
+            <div>
+              <div class="cs-outcome-label">What changed</div>
+              <p>Research reframed the design problem: infotainment is not a standalone product competing for attention, it's a supporting layer for a phone-first experience. That shift redirected the product strategy from adding features to simplifying access, and elevated physical control retention as a safety requirement rather than a legacy preference.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <p class="big-quote">"Good research doesn't just answer the question you were asked. It surfaces the question the team didn't know to ask."</p>
+</div>
+
+<!-- POV -->
+<section id="skills">
+  <div class="section-header"><span class="section-num">02</span><h2>How I <em>think</em></h2></div>
+  <div class="pov-grid">
+    <div class="pov-card">
+      <div class="pov-num">01</div>
+      <h4>Method follows question, not convenience</h4>
+      <p>I don't have a default method. I have a question, and I choose the method that gives the most honest answer to that question given the constraints of time, access, and what the team actually needs to decide. A diary study and a usability test can both be wrong for the same project, depending on what you're actually trying to learn.</p>
+    </div>
+    <div class="pov-card">
+      <div class="pov-num">02</div>
+      <h4>Workarounds are the most honest data</h4>
+      <p>When someone builds a spreadsheet to do what the product should do, or calls a colleague instead of checking the system, I treat that as the most important signal in the session. It doesn't automatically mean the design failed — it might mean the workflow was never supported, or trust in the data broke down, or training never happened. The workaround tells me where to look. The research tells me why.</p>
+    </div>
+    <div class="pov-card">
+      <div class="pov-num">03</div>
+      <h4>Frequency is not the same as importance</h4>
+      <p>The finding that appeared in seven out of seven sessions isn't always the most important one. Sometimes one participant surfaces a single assumption the entire product is built on, and that matters more than consensus. I try to separate what's common from what's consequential.</p>
+    </div>
+    <div class="pov-card">
+      <div class="pov-num">04</div>
+      <h4>Research that doesn't change a decision has zero impact</h4>
+      <p>A report that confirms what everyone already believed, sits in a folder, or gets read once and set aside has failed regardless of how rigorous the method was. I measure the success of research by whether the team made a different decision because of it, not by how well the presentation went.</p>
+    </div>
+    <div class="pov-card">
+      <div class="pov-num">05</div>
+      <h4>Design background is a research advantage</h4>
+      <p>My degree is in product design. That means I speak the language of the teams I work with, I understand what a finding needs to look like to actually influence a design decision, and I can participate in conversations about tradeoffs rather than just handing over a report and leaving.</p>
+    </div>
+    <div class="pov-card">
+      <div class="pov-num">06</div>
+      <h4>Good synthesis means choosing what not to say</h4>
+      <p>The hardest part of synthesis is cutting. Every session produces observations, but not every observation earns a place in the findings. Deciding what to leave out, what to hold back, and what the team genuinely needs to act is where research either gets sharp or gets buried in noise.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" style="background:var(--paper-card)">
+  <div class="section-header"><span class="section-num">03</span><h2>How I <em>work</em></h2></div>
+
+  <div class="process-philosophy">
+    <p class="process-intro">Research is only as good as the decisions it shapes. My process is designed around one principle: every step should either sharpen the question or sharpen the answer. Nothing else earns its place.</p>
+  </div>
+
+  <div class="process-steps-rich">
+
+    <div class="process-step-rich">
+      <div class="psrich-left">
+        <div class="psrich-num">01</div>
+        <div class="psrich-line"></div>
+      </div>
+      <div class="psrich-right">
+        <h4>Scope &amp; Frame</h4>
+        <p>Before writing a single screener question, I work with stakeholders to agree on what a successful research outcome looks like. What decision will this research inform? What would we need to learn to make it confidently? What assumptions are we most afraid to be wrong about?</p>
+        <p>This step often surfaces that the team has multiple research questions pointing in different directions. Resolving that before fieldwork saves weeks of misaligned synthesis later.</p>
+        <div class="psrich-outputs">
+          <span class="psrich-output-label">Outputs</span>
+          <div class="psrich-chips">
+            <span class="psrich-chip">Research brief</span>
+            <span class="psrich-chip">Stakeholder alignment session</span>
+            <span class="psrich-chip">Prioritised research questions</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="process-step-rich">
+      <div class="psrich-left">
+        <div class="psrich-num">02</div>
+        <div class="psrich-line"></div>
+      </div>
+      <div class="psrich-right">
+        <h4>Design &amp; Recruit</h4>
+        <p>Method choice is a research decision, not a default. I select methods based on the type of question, not habit: a behavioural problem that unfolds over time needs a diary study; a design decision that affects task flow needs moderated usability testing; an exploratory question about why users behave a certain way needs in-depth interviews with space to follow unexpected threads.</p>
+        <p>Recruitment is where most research goes wrong quietly. I write screeners that filter for people who have actually experienced the problem, not people who are available and willing. Participant quality determines insight quality.</p>
+        <div class="psrich-outputs">
+          <span class="psrich-output-label">Outputs</span>
+          <div class="psrich-chips">
+            <span class="psrich-chip">Research plan</span>
+            <span class="psrich-chip">Discussion guide</span>
+            <span class="psrich-chip">Screener with qualifying logic</span>
+            <span class="psrich-chip">Recruitment brief</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="process-step-rich">
+      <div class="psrich-left">
+        <div class="psrich-num">03</div>
+        <div class="psrich-line"></div>
+      </div>
+      <div class="psrich-right">
+        <h4>Field &amp; Capture</h4>
+        <p>I moderate with a structured guide and an open mind. The guide keeps sessions comparable across participants. The open mind catches what the guide didn't anticipate, which is often the most valuable thing in the data. When a participant says something unexpected, I follow it, because that's usually where the real insight lives.</p>
+        <p>I document in layers: task completion and errors during sessions, detailed notes immediately after, and emerging hypotheses in a running debrief document. This discipline means synthesis starts in the field, not after it.</p>
+        <div class="psrich-outputs">
+          <span class="psrich-output-label">Outputs</span>
+          <div class="psrich-chips">
+            <span class="psrich-chip">Session recordings and notes</span>
+            <span class="psrich-chip">Daily debriefs</span>
+            <span class="psrich-chip">Emerging pattern log</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="process-step-rich">
+      <div class="psrich-left">
+        <div class="psrich-num">04</div>
+        <div class="psrich-line"></div>
+      </div>
+      <div class="psrich-right">
+        <h4>Synthesise</h4>
+        <p>Synthesis is where the real intellectual work happens, and where most research loses its value if done carelessly. I separate observation from interpretation rigorously: "the user clicked three times before finding the button" is an observation; "the navigation hierarchy doesn't match the user's mental model" is an interpretation. Both matter, but conflating them early closes off better explanations.</p>
+        <p>I use affinity mapping to cluster observations, then look for patterns that cut across participants, not just themes that appear often. Frequency matters less than whether a finding changes what the team should do. A single participant quote that exposes a fundamental product assumption can outweigh a consensus finding that confirms what everyone already knew.</p>
+        <div class="psrich-outputs">
+          <span class="psrich-output-label">Outputs</span>
+          <div class="psrich-chips">
+            <span class="psrich-chip">Affinity map</span>
+            <span class="psrich-chip">Insight clusters</span>
+            <span class="psrich-chip">Journey map</span>
+            <span class="psrich-chip">Opportunity areas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="process-step-rich">
+      <div class="psrich-left">
+        <div class="psrich-num">05</div>
+      </div>
+      <div class="psrich-right">
+        <h4>Activate</h4>
+        <p>A research report that sits in a folder has zero impact. Activation means getting findings into the room where decisions are made, in a form that makes acting on them easier than ignoring them. That means different things for different stakeholders: a two-page topline for a product lead making a sprint decision; a synthesis workshop for a design team aligning on a problem space; an opportunity map for leadership deciding what to build next.</p>
+        <p>I measure the success of research not by how well the report is received, but by whether the team made a different decision because of it.</p>
+        <div class="psrich-outputs">
+          <span class="psrich-output-label">Outputs</span>
+          <div class="psrich-chips">
+            <span class="psrich-chip">Topline report</span>
+            <span class="psrich-chip">Synthesis workshop</span>
+            <span class="psrich-chip">Stakeholder presentation</span>
+            <span class="psrich-chip">Prioritised recommendations</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- METHODS GRID -->
+  <div style="margin-top: 80px;">
+    <h3 style="font-family:var(--serif);font-size:26px;letter-spacing:-0.02em;margin-bottom:8px;color:var(--ink)">Methods in my toolkit</h3>
+    <p style="font-size:14px;color:var(--ink-muted);margin-bottom:32px;font-weight:300">Qualitative, quantitative, and mixed, selected based on the question, not habit.</p>
+    <div class="methods-grid">
+      <div class="method-card"><div class="method-num">IDI</div><h4>In-depth Interviews</h4><p>1:1 sessions that surface motivations, mental models, and the reasoning behind behaviour</p></div>
+      <div class="method-card"><div class="method-num">UT</div><h4>Usability Testing</h4><p>Task-based evaluation, remote, in-person, and real-world field environments</p></div>
+      <div class="method-card"><div class="method-num">DS</div><h4>Diary Studies</h4><p>Longitudinal tracking that captures what happens between sessions, over time</p></div>
+      <div class="method-card"><div class="method-num">CI</div><h4>Contextual Inquiry</h4><p>Observing users in their actual environment, where context shapes the experience</p></div>
+      <div class="method-card"><div class="method-num">HE</div><h4>Heuristic Evaluation</h4><p>Expert interface review against established principles before user sessions begin</p></div>
+      <div class="method-card"><div class="method-num">CT</div><h4>Concept Testing</h4><p>Evaluating early-stage ideas before significant development investment</p></div>
+      <div class="method-card"><div class="method-num">SR</div><h4>Secondary Research</h4><p>Literature review, competitive analysis, domain mapping before primary fieldwork</p></div>
+      <div class="method-card"><div class="method-num">SV</div><h4>Surveys</h4><p>Quantitative and mixed-method surveys to validate qualitative findings at scale</p></div>
+      <div class="method-card"><div class="method-num">TSM</div><h4>Task Success Metrics</h4><p>Completion rates, error rates, and time-on-task to quantify usability performance</p></div>
+      <div class="method-card"><div class="method-num">CA</div><h4>Competitive Analysis</h4><p>Benchmarking across defined dimensions to identify gaps and opportunities</p></div>
+      <div class="method-card"><div class="method-num">CS</div><h4>Card Sorting</h4><p>Open and closed sorting to inform information architecture decisions</p></div>
+      <div class="method-card"><div class="method-num">WS</div><h4>Synthesis Workshops</h4><p>Cross-functional FigJam and Miro sessions to move teams from data to direction</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-header"><span class="section-num">04</span><h2>About <em>me</em></h2></div>
+  <div class="about-grid">
+    <div class="about-sidebar">
+      <div class="about-name-card">
+        <div class="name">Pranjal Khadayate</div>
+        <div class="title">UX Researcher</div>
+      </div>
+      <div class="about-contact">
+        <a class="contact-item" href="mailto:pranjalkhadayate@gmail.com"><span class="contact-icon">✉</span>pranjalkhadayate@gmail.com</a>
+        <a class="contact-item" href="https://linkedin.com/in/pranjal-khadayate" target="_blank"><span class="contact-icon">in</span>linkedin.com/in/pranjal-khadayate</a>
+        <div class="contact-item"><span class="contact-icon">📍</span>Indore, India</div>
+        <div class="contact-item"><span class="contact-icon">📞</span>+91 8269891454</div>
+      </div>
+    </div>
+    <div class="about-content">
+      <h3>Background</h3>
+      <p>I'm a UX researcher leading end-to-end qualitative and mixed-method research across agency and consultancy environments. My work spans enterprise software, consumer platforms, mobility ecosystems, and trust and safety, working across simultaneous client engagements at pace.</p>
+      <p>I specialise in the kind of research problems where the question isn't just "does this design work?" but "why do users behave this way, and what does the product actually need to do differently?" That means going beyond the surface, understanding the context, the workarounds, and the moments where trust breaks. I'm fluent in Hindi and English, which has been useful working across linguistically diverse participant groups.</p>
+
+      <h3>What I bring to a team</h3>
+      <p>Beyond individual studies, I build the infrastructure that makes research sustainable. I've created research playbooks, screener systems, and reporting frameworks now used across the practice. I'm equally comfortable running discovery research that shapes product direction and evaluative research that validates design decisions before launch.</p>
+      <p>My background is in product design (Unitedworld Institute of Design, Ahmedabad, 2018–2022), which means I speak the language of design teams and can bridge the gap between what research surfaces and what teams are able to act on.</p>
+
+      <h3>Experience</h3>
+      <div class="exp-item">
+        <div class="exp-company">YUJ Designs</div>
+        <div class="exp-role">UX Researcher &nbsp;·&nbsp; Apr 2022 – Present &nbsp;·&nbsp; Pune (Remote)</div>
+        <p>Led 15+ qualitative and mixed-method research studies for Google, Meta, MSIL, Royal Enfield, and Otis across trust and safety, conversational commerce, EV ecosystems, and enterprise mobility. Built research operations infrastructure, playbooks, screener templates, recruitment workflows, adopted across the research practice.</p>
+      </div>
+      <div class="exp-item">
+        <div class="exp-company">ZS Associates</div>
+        <div class="exp-role">Contractor, UX Research &amp; Design &nbsp;·&nbsp; May 2022 – May 2023 &nbsp;·&nbsp; Pune (Remote)</div>
+        <p>Conducted generative research and 25+ moderated usability sessions with medical forecasters and data science teams for enterprise healthcare analytics platforms. Identified unmet workflow needs through contextual inquiry and stakeholder interviews prior to feature design decisions.</p>
+      </div>
+      <div class="exp-item">
+        <div class="exp-company">Unitedworld Institute of Design</div>
+        <div class="exp-role">Bachelor's in Design, Product Design &nbsp;·&nbsp; 2018 – 2022 &nbsp;·&nbsp; Ahmedabad</div>
+        <p>Foundation in design thinking, human-centred methodology, and product development.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<div class="tools-section">
+  <div class="section-header" style="margin-bottom:0"><span class="section-num">05</span><h2 style="font-size:32px">Tools &amp; <em>platforms</em></h2></div>
+  <div class="tools-grid">
+    <div class="tool-chip">Figma</div><div class="tool-chip">FigJam</div><div class="tool-chip">Miro</div>
+    <div class="tool-chip">Lookback</div><div class="tool-chip">Dovetail</div><div class="tool-chip">Maze</div>
+    <div class="tool-chip">Zoom</div><div class="tool-chip">Discuss.io</div><div class="tool-chip">Recollective</div>
+    <div class="tool-chip">Google Sheets</div><div class="tool-chip">Notion</div><div class="tool-chip">MS Teams</div>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <div class="f-name">Pranjal Khadayate</div>
+    <p>UX Researcher</p>
+  </div>
+  <div style="text-align:right">
+    <p>pranjalkhadayate@gmail.com</p>
+    <p>+91 8269891454 &nbsp;·&nbsp; Indore, India</p>
+    <p>linkedin.com/in/pranjal-khadayate</p>
+  </div>
+</footer>
+
+<script>
+function toggleWork(header) {
+  const item = header.parentElement;
+  const body = item.querySelector('.cs-body');
+  const toggle = header.querySelector('.work-toggle');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.cs-body.open').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.work-toggle.open').forEach(t => t.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    toggle.classList.add('open');
+    setTimeout(() => { item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
+  }
+}
+</script>
+</body>
+</html>
